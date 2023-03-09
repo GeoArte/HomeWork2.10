@@ -73,14 +73,17 @@ public class Main {
         System.out.println(transformationL.apply(d));
         System.out.println(createRandomNumber.get());
         System.out.println(createRandomNumberL.get());
-
-        public static <T, U> Function<T, U> ternaryOperator(
+    }
+    public static <T, U> Function<T, U> ternaryOperator(
             Predicate<? super T> condition,
             Function<? super T, ? extends U> ifTrue,
             Function<? super T, ? extends U> ifFalse)
+    {
+        if (condition.equals(true)) {
+            return (Function<T, U>) ifTrue;
+        } else
         {
-            return;
+            return (Function<T, U>) ifFalse;
         }
-
     }
 }
