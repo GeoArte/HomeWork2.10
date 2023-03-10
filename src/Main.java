@@ -73,17 +73,40 @@ public class Main {
         System.out.println(transformationL.apply(d));
         System.out.println(createRandomNumber.get());
         System.out.println(createRandomNumberL.get());
+
+        Function<Integer, Integer> ifTrue = (o) ->
+        {
+            Integer a = o*10;
+            return a;
+        };
+        Function<Integer, Integer> ifFalse = (o) ->
+        {
+            Integer a = o*-1;
+            return a;
+        };
+        int f = -20;
+        int i = 1;
+        System.out.println(ternaryOperator(checker , ifTrue, ifFalse).apply(f));
+        System.out.println(ternaryOperator(checker, ifTrue, ifFalse).apply(i));
     }
     public static <T, U> Function<T, U> ternaryOperator(
             Predicate<? super T> condition,
             Function<? super T, ? extends U> ifTrue,
             Function<? super T, ? extends U> ifFalse)
     {
-        if (condition.equals(true)) {
-            return (Function<T, U>) ifTrue;
-        } else
+        Function<Predicate<T> , Function<T , U>> function = new Function<Predicate<T>, Function<T, U>>()
         {
-            return (Function<T, U>) ifFalse;
-        }
+            @Override
+            public Function<T, U> apply(Predicate<T> tPredicate)
+            {
+                if (tPredicate.equals(true)) {
+                    return (Function<T, U>) ifTrue;
+                } else
+                {
+                    return (Function<T, U>) ifFalse;
+                }
+            }
+        };
+        return function.apply((Predicate<T>) condition);
     }
 }
