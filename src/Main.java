@@ -86,27 +86,27 @@ public class Main {
         };
         int f = -20;
         int i = 1;
-        System.out.println(ternaryOperator(checker , ifTrue, ifFalse).apply(f));
-        System.out.println(ternaryOperator(checker, ifTrue, ifFalse).apply(i));
+        System.out.println(ternaryOperator(checker , ifTrue, ifFalse, f).apply(f));
+        System.out.println(ternaryOperator(checker, ifTrue, ifFalse, i).apply(i));
     }
     public static <T, U> Function<T, U> ternaryOperator(
             Predicate<? super T> condition,
             Function<? super T, ? extends U> ifTrue,
-            Function<? super T, ? extends U> ifFalse)
+            Function<? super T, ? extends U> ifFalse,
+            T a)
     {
-        Function<Predicate<T> , Function<T , U>> function = new Function<Predicate<T>, Function<T, U>>()
-        {
+        Function<T , Function<T , U>> function = new Function<T, Function<T, U>>() {
             @Override
-            public Function<T, U> apply(Predicate<T> tPredicate)
-            {
-                if (tPredicate.equals(true)) {
+            public Function<T, U> apply(T t) {
+                if (condition.test(t)) {
                     return (Function<T, U>) ifTrue;
-                } else
+                }
+                else
                 {
                     return (Function<T, U>) ifFalse;
                 }
             }
         };
-        return function.apply((Predicate<T>) condition);
+        return function.apply(a);
     }
 }
