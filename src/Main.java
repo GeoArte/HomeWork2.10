@@ -1,4 +1,3 @@
-import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -86,27 +85,27 @@ public class Main {
         };
         int f = -20;
         int i = 1;
-        System.out.println(ternaryOperator(checker , ifTrue, ifFalse, f).apply(f));
-        System.out.println(ternaryOperator(checker, ifTrue, ifFalse, i).apply(i));
+        System.out.println(ternaryOperator(checker , ifTrue, ifFalse).apply(f));
+        System.out.println(ternaryOperator(checker, ifTrue, ifFalse).apply(i));
+        ternaryOperator(checker, ifTrue, ifFalse).apply(i);
     }
     public static <T, U> Function<T, U> ternaryOperator(
             Predicate<? super T> condition,
             Function<? super T, ? extends U> ifTrue,
-            Function<? super T, ? extends U> ifFalse,
-            T a)
+            Function<? super T, ? extends U> ifFalse)
     {
-        Function<T , Function<T , U>> function = new Function<T, Function<T, U>>() {
+        Function<T , U> function = new Function<T, U>() {
             @Override
-            public Function<T, U> apply(T t) {
-                if (condition.test(t)) {
-                    return (Function<T, U>) ifTrue;
+            public U apply(T a) {
+                if (condition.test(a)) {
+                    return ifTrue.apply(a);
                 }
                 else
                 {
-                    return (Function<T, U>) ifFalse;
+                    return ifFalse.apply(a);
                 }
             }
         };
-        return function.apply(a);
+        return (Function<T, U>) function;
     }
 }
